@@ -1,18 +1,10 @@
 local InterlockingData = {
-    -- Reset Priority Logic:
-    -- 1 = Distant Signals (Set to caution first)
-    -- 2 = Stop/Shunt Signals (Set to danger second)
-    -- 3 = Facing Point Locks (Unlock points third)
-    -- 4 = Points / Combined Points (Move points last)
-
     LeverConfig = {
-        -- Distant Signals (Yellow)
         ["DE_2"]  = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
         ["DE_5"]  = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
         ["DE_41"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
         ["DE_45"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
 
-        -- Stop/Shunt Signals (Red)
         ["DE_3"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE03" },
         ["DE_4"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE04" },
         ["DE_6"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE06" },
@@ -31,7 +23,6 @@ local InterlockingData = {
         ["DE_43"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
         ["DE_44"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
 
-        -- Facing Point Locks (Blue & White over Blue)
         ["DE_14"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
         ["DE_16"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
         ["DE_18"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
@@ -41,7 +32,6 @@ local InterlockingData = {
         ["DE_31"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
         ["DE_33"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
 
-        -- Points (Black & Blue over Black)
         ["DE_12"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
         ["DE_15"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
         ["DE_17"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
@@ -56,20 +46,15 @@ local InterlockingData = {
 
     DefaultPriority = 5,
     
-    -- ==========================================
-    -- ROUTE CONFIGURATION
-    -- Arrays inside 'Group' automatically get shuffled upon execution.
-    -- ==========================================
     Routes = {
-        -- DOVEDALE CENTRAL ARRIVALS
-        ["DovedaleCentral_Platform3"] = {
+        ["Dovedale_Platform3"] = {
             RequiredLevers = {"DE_3", "DE_18"},
             Sequence = {
                 {Group = {"DE_18"}},
                 {Group = {"DE_3"}}
             }
         },
-        ["DovedaleCentral_Platform5"] = {
+        ["Dovedale_Platform5"] = {
             RequiredLevers = {"DE_6", "DE_18", "DE_19", "DE_20"},
             Sequence = {
                 {Group = {"DE_19"}},
@@ -77,25 +62,20 @@ local InterlockingData = {
                 {Group = {"DE_6"}}
             }
         },
-        ["DovedaleCentral_Platform6"] = {
+        ["Dovedale_Platform6"] = {
             RequiredLevers = {"DE_8", "DE_18", "DE_19", "DE_20", "DE_21"},
             Sequence = {
                 {Group = {"DE_19", "DE_21"}},
-                {Group = {"DE_18", "DE_20"}},
+                {Group = {"DE_20", "DE_18"}},
                 {Group = {"DE_8"}}
             }
         },
-
-        -- SATUS ARRIVALS
-        -- ... (Rest of your existing code)
-
-        -- SATUS ARRIVALS
         ["Satus_Platform1"] = {
             RequiredLevers = {"DE_26", "DE_27", "DE_30", "DE_31", "DE_33", "DE_44"},
             Sequence = {
-                {Group = {"DE_26", "DE_30"}}, -- Points First
-                {Group = {"DE_27", "DE_31", "DE_33"}}, -- FPLs Second
-                {Group = {"DE_44"}} -- Signals Last
+                {Group = {"DE_26", "DE_30"}},
+                {Group = {"DE_27", "DE_31", "DE_33"}},
+                {Group = {"DE_44"}}
             }
         },
         ["Satus_Platform2"] = {
@@ -115,14 +95,13 @@ local InterlockingData = {
             }
         },
         
-        -- COSDALE HARBOUR ARRIVALS
         ["Cosdale_Platform2"] = {
             RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_16"},
             Sequence = {
-                {Group = {"DE_12"}}, -- Combined Points First
-                {Group = {"DE_14", "DE_16"}}, -- FPLs Second
-                {Group = {"DE_13"}}, -- Stop Signals
-                {Group = {"DE_11"}} -- Distant Signals
+                {Group = {"DE_12"}},
+                {Group = {"DE_14", "DE_16"}},
+                {Group = {"DE_13"}},
+                {Group = {"DE_11"}}
             }
         },
         ["Cosdale_Platform3"] = {
