@@ -1,158 +1,132 @@
 local InterlockingData = {
-    -- Reset Priority Logic:
-    -- 1 = Distant Signals (Set to caution first)
-    -- 2 = Stop/Shunt Signals (Set to danger second)
-    -- 3 = Facing Point Locks (Unlock points third)
-    -- 4 = Points / Combined Points (Move points last)
-
-    LeverConfig = {
-        -- Distant Signals (Yellow)
-        ["DE_2"]  = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
-        ["DE_5"]  = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
-        ["DE_41"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
-        ["DE_45"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
-
-        -- Stop/Shunt Signals (Red)
-        ["DE_3"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE03" },
-        ["DE_4"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE04" },
-        ["DE_6"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE06" },
-        ["DE_7"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE07" },
-        ["DE_8"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE08" },
-        ["DE_9"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE09" },
-        ["DE_10"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE10" },
-        ["DE_11"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
-        ["DE_13"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE13" },
-        ["DE_34"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE34" },
-        ["DE_37"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE37" },
-        ["DE_38"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE38" },
-        ["DE_39"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE39" },
-        ["DE_40"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
-        ["DE_42"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE42" },
-        ["DE_43"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
-        ["DE_44"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
-
-        -- Facing Point Locks (Blue & White over Blue)
-        ["DE_14"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
-        ["DE_16"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
-        ["DE_18"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
-        ["DE_20"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
-        ["DE_22"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
-        ["DE_27"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
-        ["DE_31"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
-        ["DE_33"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
-
-        -- Points (Black & Blue over Black)
-        ["DE_12"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
-        ["DE_15"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
-        ["DE_17"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
-        ["DE_19"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
-        ["DE_21"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
-        ["DE_23"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
-        ["DE_26"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
-        ["DE_28"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
-        ["DE_30"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
-        ["DE_32"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
-    },
-
-    DefaultPriority = 5,
-    
-    -- ==========================================
-    -- ROUTE CONFIGURATION
-    -- Arrays inside 'Group' automatically get shuffled upon execution.
-    -- ==========================================
-    Routes = {
-        -- DOVEDALE CENTRAL ARRIVALS
-        ["DovedaleCentral_Platform3"] = {
-            RequiredLevers = {"DE_3", "DE_18"},
-            Sequence = {
-                {Group = {"DE_18"}},
-                {Group = {"DE_3"}}
-            }
+    DE = {
+        LeverConfig = {
+            ["DE_2"]  = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
+            ["DE_5"]  = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
+            ["DE_41"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
+            ["DE_45"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
+            ["DE_3"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE03" },
+            ["DE_4"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE04" },
+            ["DE_6"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE06" },
+            ["DE_7"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE07" },
+            ["DE_8"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE08" },
+            ["DE_9"]  = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE09" },
+            ["DE_10"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE10" },
+            ["DE_11"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
+            ["DE_13"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE13" },
+            ["DE_34"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE34" },
+            ["DE_37"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE37" },
+            ["DE_38"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE38" },
+            ["DE_39"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE39" },
+            ["DE_40"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
+            ["DE_42"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE42" },
+            ["DE_43"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
+            ["DE_44"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
+            ["DE_14"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
+            ["DE_16"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
+            ["DE_18"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
+            ["DE_20"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
+            ["DE_22"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
+            ["DE_27"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
+            ["DE_31"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
+            ["DE_33"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
+            ["DE_12"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
+            ["DE_15"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
+            ["DE_17"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
+            ["DE_19"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
+            ["DE_21"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
+            ["DE_23"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
+            ["DE_26"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
+            ["DE_28"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
+            ["DE_30"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
+            ["DE_32"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
         },
-        ["DovedaleCentral_Platform5"] = {
-            RequiredLevers = {"DE_6", "DE_18", "DE_19", "DE_20"},
-            Sequence = {
-                {Group = {"DE_19"}},
-                {Group = {"DE_18", "DE_20"}},
-                {Group = {"DE_6"}}
-            }
-        },
-        ["DovedaleCentral_Platform6"] = {
-            RequiredLevers = {"DE_8", "DE_18", "DE_19", "DE_20", "DE_21"},
-            Sequence = {
-                {Group = {"DE_19", "DE_21"}},
-                {Group = {"DE_18", "DE_20"}},
-                {Group = {"DE_8"}}
-            }
-        },
-
-        -- SATUS ARRIVALS
-        -- ... (Rest of your existing code)
-
-        -- SATUS ARRIVALS
-        ["Satus_Platform1"] = {
-            RequiredLevers = {"DE_26", "DE_27", "DE_30", "DE_31", "DE_33", "DE_44"},
-            Sequence = {
-                {Group = {"DE_26", "DE_30"}}, -- Points First
-                {Group = {"DE_27", "DE_31", "DE_33"}}, -- FPLs Second
-                {Group = {"DE_44"}} -- Signals Last
-            }
-        },
-        ["Satus_Platform2"] = {
-            RequiredLevers = {"DE_27", "DE_30", "DE_31", "DE_33", "DE_43"},
-            Sequence = {
-                {Group = {"DE_30"}},
-                {Group = {"DE_27", "DE_31", "DE_33"}},
-                {Group = {"DE_43"}}
-            }
-        },
-        ["Satus_Platform4"] = {
-            RequiredLevers = {"DE_22", "DE_23", "DE_31", "DE_33", "DE_40"},
-            Sequence = {
-                {Group = {"DE_23"}},
-                {Group = {"DE_22", "DE_31", "DE_33"}},
-                {Group = {"DE_40"}}
-            }
-        },
-        
-        -- COSDALE HARBOUR ARRIVALS
-        ["Cosdale_Platform2"] = {
-            RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_16"},
-            Sequence = {
-                {Group = {"DE_12"}}, -- Combined Points First
-                {Group = {"DE_14", "DE_16"}}, -- FPLs Second
-                {Group = {"DE_13"}}, -- Stop Signals
-                {Group = {"DE_11"}} -- Distant Signals
-            }
-        },
-        ["Cosdale_Platform3"] = {
-            RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18"},
-            Sequence = {
-                {Group = {"DE_12", "DE_15"}},
-                {Group = {"DE_14", "DE_18"}},
-                {Group = {"DE_13"}},
-                {Group = {"DE_11"}}
-            }
-        },
-        ["Cosdale_Platform5"] = {
-            RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20"},
-            Sequence = {
-                {Group = {"DE_12", "DE_15", "DE_19"}},
-                {Group = {"DE_14", "DE_18", "DE_20"}},
-                {Group = {"DE_13"}},
-                {Group = {"DE_11"}}
-            }
-        },
-        ["Cosdale_Platform6"] = {
-            RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20", "DE_21"},
-            Sequence = {
-                {Group = {"DE_12", "DE_15", "DE_19", "DE_21"}},
-                {Group = {"DE_14", "DE_18", "DE_20"}},
-                {Group = {"DE_13"}},
-                {Group = {"DE_11"}}
+        DefaultPriority = 5,
+        Routes = {
+            ["DovedaleCentral_Platform3"] = {
+                RequiredLevers = {"DE_3", "DE_18"},
+                Sequence = {
+                    {Group = {"DE_18"}},
+                    {Group = {"DE_3"}}
+                }
+            },
+            ["DovedaleCentral_Platform5"] = {
+                RequiredLevers = {"DE_6", "DE_18", "DE_19", "DE_20"},
+                Sequence = {
+                    {Group = {"DE_19"}},
+                    {Group = {"DE_18", "DE_20"}},
+                    {Group = {"DE_6"}}
+                }
+            },
+            ["DovedaleCentral_Platform6"] = {
+                RequiredLevers = {"DE_8", "DE_18", "DE_19", "DE_20", "DE_21"},
+                Sequence = {
+                    {Group = {"DE_19", "DE_21"}},
+                    {Group = {"DE_18", "DE_20"}},
+                    {Group = {"DE_8"}}
+                }
+            },
+            ["Satus_Platform1"] = {
+                RequiredLevers = {"DE_26", "DE_27", "DE_30", "DE_31", "DE_33", "DE_44"},
+                Sequence = {
+                    {Group = {"DE_26", "DE_30"}},
+                    {Group = {"DE_27", "DE_31", "DE_33"}},
+                    {Group = {"DE_44"}}
+                }
+            },
+            ["Satus_Platform2"] = {
+                RequiredLevers = {"DE_27", "DE_30", "DE_31", "DE_33", "DE_43"},
+                Sequence = {
+                    {Group = {"DE_30"}},
+                    {Group = {"DE_27", "DE_31", "DE_33"}},
+                    {Group = {"DE_43"}}
+                }
+            },
+            ["Satus_Platform4"] = {
+                RequiredLevers = {"DE_22", "DE_23", "DE_31", "DE_33", "DE_40"},
+                Sequence = {
+                    {Group = {"DE_23"}},
+                    {Group = {"DE_22", "DE_31", "DE_33"}},
+                    {Group = {"DE_40"}}
+                }
+            },
+            ["Cosdale_Platform2"] = {
+                RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_16"},
+                Sequence = {
+                    {Group = {"DE_12"}},
+                    {Group = {"DE_14", "DE_16"}},
+                    {Group = {"DE_13"}},
+                    {Group = {"DE_11"}}
+                }
+            },
+            ["Cosdale_Platform3"] = {
+                RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18"},
+                Sequence = {
+                    {Group = {"DE_12", "DE_15"}},
+                    {Group = {"DE_14", "DE_18"}},
+                    {Group = {"DE_13"}},
+                    {Group = {"DE_11"}}
+                }
+            },
+            ["Cosdale_Platform5"] = {
+                RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20"},
+                Sequence = {
+                    {Group = {"DE_12", "DE_15", "DE_19"}},
+                    {Group = {"DE_14", "DE_18", "DE_20"}},
+                    {Group = {"DE_13"}},
+                    {Group = {"DE_11"}}
+                }
+            },
+            ["Cosdale_Platform6"] = {
+                RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20", "DE_21"},
+                Sequence = {
+                    {Group = {"DE_12", "DE_15", "DE_19", "DE_21"}},
+                    {Group = {"DE_14", "DE_18", "DE_20"}},
+                    {Group = {"DE_13"}},
+                    {Group = {"DE_11"}}
+                }
             }
         }
     }
 }
-
 return InterlockingData
