@@ -201,7 +201,6 @@ local function pullLeverToState(frameDE, leverName, targetState)
     if pulled and clickDetector then
         if pulled.Value ~= targetState then
             
-            -- Electric Release Check
             if targetState == true and InterlockingModule and InterlockingModule.LeverConfig then
                 local config = InterlockingModule.LeverConfig[leverName]
                 if config and config.ReleaseName then
@@ -216,19 +215,18 @@ local function pullLeverToState(frameDE, leverName, targetState)
                             fireclickdetector(releaseClick)
                             local releaseTimeout = os.clock() + 3
                             while isPressed.Value == false and os.clock() < releaseTimeout do
-                                task.wait() -- Removed 0.1 for faster polling
+                                task.wait()
                             end
                         end
                     end
                 end
             end
 
-            -- Pull the lever
             fireclickdetector(clickDetector)
             
             local timeout = os.clock() + 5
             while pulled.Value ~= targetState and os.clock() < timeout do
-                task.wait() -- Removed 0.1 for faster polling
+                task.wait()
             end
             
             return pulled.Value == targetState
@@ -238,9 +236,6 @@ local function pullLeverToState(frameDE, leverName, targetState)
     return false
 end
 
--- ==========================================
--- DYNAMIC ROUTE EXECUTOR
--- ==========================================
 local function executeRoute(routeKey, originName, platformName)
     if not isDovedaleActive then
         Fluent:Notify({ Title = "Access Denied", Content = "You are not currently hosting the Dovedale East Box.", Duration = 4 })
@@ -268,7 +263,6 @@ local function executeRoute(routeKey, originName, platformName)
             return
         end
 
-        -- Verify Required Levers are inactive
         for _, name in ipairs(routeData.RequiredLevers) do
             local lever = frameDE:FindFirstChild(name)
             local pulled = lever and lever:FindFirstChild("Values") and lever.Values:FindFirstChild("Pulled")
@@ -279,7 +273,6 @@ local function executeRoute(routeKey, originName, platformName)
             end
         end
 
-        -- Parse the Sequence Groups and Randomize Arrays
         local leverSequence = {}
         for _, step in ipairs(routeData.Sequence) do
             if step.Group then
@@ -294,7 +287,6 @@ local function executeRoute(routeKey, originName, platformName)
             end
         end
 
-        -- Execute Routing
         for _, leverName in ipairs(leverSequence) do
             local success = pullLeverToState(frameDE, leverName, true)
             if not success then
@@ -308,10 +300,26 @@ local function executeRoute(routeKey, originName, platformName)
     end)
 end
 
+Tabs.DE:AddSection("Dovedale Central")
 
--- ==========================================
--- DOVEDALE EAST: SATUS ARRIVALS
--- ==========================================
+Tabs.DE:AddButton({
+    Title = "Route to Platform 3",
+    Description = "Routes incoming train from Dovedale Central -> Platform 3.",
+    Callback = function() executeRoute("Dovedale_Platform3", "Dovedale Central", "Platform 3") end
+})
+
+Tabs.DE:AddButton({
+    Title = "Route to Platform 5",
+    Description = "Routes incoming train from Dovedale Central -> Platform 5.",
+    Callback = function() executeRoute("Dovedale_Platform5", "Dovedale Central", "Platform 5") end
+})
+
+Tabs.DE:AddButton({
+    Title = "Route to Platform 6",
+    Description = "Routes incoming train from Dovedale Central -> Platform 6.",
+    Callback = function() executeRoute("Dovedale_Platform6", "Dovedale Central", "Platform 6") end
+})
+
 Tabs.DE:AddSection("Arrivals from Satus")
 
 Tabs.DE:AddButton({
@@ -332,9 +340,6 @@ Tabs.DE:AddButton({
     Callback = function() executeRoute("Satus_Platform4", "Satus", "Platform 4") end
 })
 
--- ==========================================
--- DOVEDALE EAST: COSDALE HARBOUR ARRIVALS
--- ==========================================
 Tabs.DE:AddSection("Arrivals from Cosdale Harbour")
 
 Tabs.DE:AddButton({
@@ -361,10 +366,6 @@ Tabs.DE:AddButton({
     Callback = function() executeRoute("Cosdale_Platform6", "Cosdale Harbour", "Platform 6") end
 })
 
-
--- ==========================================
--- FRAME MANAGEMENT
--- ==========================================
 Tabs.DE:AddSection("Frame Control")
 
 Tabs.DE:AddButton({
@@ -393,7 +394,8 @@ Tabs.DE:AddButton({
 
             local activeLevers = {}
             for i = 1, 49 do
-                local leverName = "DE_" .. tostring(i)
+                -- Use string.format to ensure numbers 1-9 become 01-09
+                local leverName = string.format("DE_%02d", i)
                 local lever = frameDE:FindFirstChild(leverName)
                 
                 if lever then
