@@ -65,17 +65,16 @@ local InterlockingData = {
         ["Satus_Platform1"] = {
             RequiredLevers = {"DE_26", "DE_27", "DE_30", "DE_31", "DE_33", "DE_44"},
             Sequence = {
-                {Group = {"DE_26", "DE_27", "DE_30", "DE_31"}},
-                {Group = {"DE_33"}},
-                {Group = {"DE_44"}}
+                {Group = {"DE_26", "DE_30"}}, -- Points First
+                {Group = {"DE_27", "DE_31", "DE_33"}}, -- FPLs Second
+                {Group = {"DE_44"}} -- Signals Last
             }
         },
         ["Satus_Platform2"] = {
             RequiredLevers = {"DE_27", "DE_30", "DE_31", "DE_33", "DE_43"},
             Sequence = {
-                {Group = {"DE_27", "DE_30"}},
-                {Group = {"DE_31"}},
-                {Group = {"DE_33"}},
+                {Group = {"DE_30"}},
+                {Group = {"DE_27", "DE_31", "DE_33"}},
                 {Group = {"DE_43"}}
             }
         },
@@ -83,8 +82,7 @@ local InterlockingData = {
             RequiredLevers = {"DE_22", "DE_23", "DE_31", "DE_33", "DE_40"},
             Sequence = {
                 {Group = {"DE_23"}},
-                {Group = {"DE_22"}},
-                {Group = {"DE_31", "DE_33"}},
+                {Group = {"DE_22", "DE_31", "DE_33"}},
                 {Group = {"DE_40"}}
             }
         },
@@ -93,18 +91,17 @@ local InterlockingData = {
         ["Cosdale_Platform2"] = {
             RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_16"},
             Sequence = {
-                {Group = {"DE_14", "DE_16"}},
-                {Group = {"DE_12"}},
-                {Group = {"DE_13"}},
-                {Group = {"DE_11"}}
+                {Group = {"DE_12"}}, -- Combined Points First
+                {Group = {"DE_14", "DE_16"}}, -- FPLs Second
+                {Group = {"DE_13"}}, -- Stop Signals
+                {Group = {"DE_11"}} -- Distant Signals
             }
         },
         ["Cosdale_Platform3"] = {
             RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18"},
             Sequence = {
-                {Group = {"DE_15"}},
+                {Group = {"DE_12", "DE_15"}},
                 {Group = {"DE_14", "DE_18"}},
-                {Group = {"DE_12"}},
                 {Group = {"DE_13"}},
                 {Group = {"DE_11"}}
             }
@@ -112,9 +109,8 @@ local InterlockingData = {
         ["Cosdale_Platform5"] = {
             RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20"},
             Sequence = {
-                {Group = {"DE_15", "DE_19"}},
+                {Group = {"DE_12", "DE_15", "DE_19"}},
                 {Group = {"DE_14", "DE_18", "DE_20"}},
-                {Group = {"DE_12"}},
                 {Group = {"DE_13"}},
                 {Group = {"DE_11"}}
             }
@@ -122,9 +118,8 @@ local InterlockingData = {
         ["Cosdale_Platform6"] = {
             RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20", "DE_21"},
             Sequence = {
-                {Group = {"DE_15", "DE_19", "DE_21"}},
+                {Group = {"DE_12", "DE_15", "DE_19", "DE_21"}},
                 {Group = {"DE_14", "DE_18", "DE_20"}},
-                {Group = {"DE_12"}},
                 {Group = {"DE_13"}},
                 {Group = {"DE_11"}}
             }
