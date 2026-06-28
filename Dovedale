@@ -201,8 +201,9 @@ local function pullLeverToState(frameDE, leverName, targetState)
     if pulled and clickDetector then
         if pulled.Value ~= targetState then
             
-            if targetState == true and InterlockingModule and InterlockingModule.LeverConfig then
-                local config = InterlockingModule.LeverConfig[leverName]
+            -- Updated to target InterlockingModule.Boxes.DE
+            if targetState == true and InterlockingModule and InterlockingModule.Boxes and InterlockingModule.Boxes.DE.LeverConfig then
+                local config = InterlockingModule.Boxes.DE.LeverConfig[leverName]
                 if config and config.ReleaseName then
                     local releaseNode = frameDE:FindFirstChild(config.ReleaseName)
                     if releaseNode then
@@ -242,12 +243,13 @@ local function executeRoute(routeKey, originName, platformName)
         return
     end
 
-    if not InterlockingModule or not InterlockingModule.Routes then
+    -- Updated to check for Boxes.DE structure
+    if not InterlockingModule or not InterlockingModule.Boxes or not InterlockingModule.Boxes.DE.Routes then
         Fluent:Notify({ Title = "Data Missing", Content = "Route module failed to initialize. Try re-executing.", Duration = 5 })
         return
     end
 
-    local routeData = InterlockingModule.Routes[routeKey]
+    local routeData = InterlockingModule.Boxes.DE.Routes[routeKey]
     if not routeData then
         Fluent:Notify({ Title = "Error", Content = "Route data not found for: " .. tostring(routeKey), Duration = 4 })
         return
@@ -300,7 +302,50 @@ local function executeRoute(routeKey, originName, platformName)
     end)
 end
 
-Tabs.DE:AddSection("Dovedale Central")
+-- NEW HELPER: Checks if the DC telegraph accepts the train
+local function checkDCClearance()
+    local telegraph = workspace:FindFirstChild("PenguinTelegraph")
+    if not telegraph then return false end
+    
+    local link = telegraph:FindFirstChild("DE - DC")
+    if not link then return false end
+    
+    local target = link:FindFirstChild("DC")
+    if not target then return false end
+    
+    local state = target:FindFirstChild("State")
+    if state and state.Value == 1 then
+        return true
+    end
+    
+    return false
+end
+
+-- NEW HELPER: Checks if the Tokenless Block to Cosdale Harbour accepts the train
+local function checkCHClearance()
+    local block = workspace:FindFirstChild("TokenlessBlocks DE - CH")
+    if not block then return false end
+    
+    local states = block:FindFirstChild("States")
+    if not states then return false end
+    
+    local isCleared = states:FindFirstChild("IsCleared")
+    local isLocked = states:FindFirstChild("IsLocked")
+    local dial = states:FindFirstChild("Dial")
+    local whoCanReset = states:FindFirstChild("WhoCanReset")
+    
+    -- Ensure all conditions strictly match
+    if isCleared and isCleared.Value == -1 
+       and isLocked and isLocked.Value == true 
+       and dial and dial.Value == 3 
+       and whoCanReset and whoCanReset.Value == -1 then
+        return true
+    end
+    
+    return false
+end
+
+Tabs.DE:AddSection("Arrivals from Dovedale Central")
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 3",
@@ -318,6 +363,44 @@ Tabs.DE:AddButton({
     Title = "Route to Platform 6",
     Description = "Routes incoming train from Dovedale Central -> Platform 6.",
     Callback = function() executeRoute("Dovedale_Platform6", "Dovedale Central", "Platform 6") end
+})
+
+Tabs.DE:AddSection("Departures to Dovedale Central")
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 2",
+    Description = "Routes outgoing train from Platform 2 -> Dovedale Central.",
+    Callback = function() 
+        if not checkDCClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "Dovedale Central must accept your train first.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform2_DC", "Platform 2", "Dovedale Central") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 4",
+    Description = "Routes outgoing train from Platform 4 -> Dovedale Central.",
+    Callback = function() 
+        if not checkDCClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "Dovedale Central must accept your train first.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform4_DC", "Platform 4", "Dovedale Central") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 6",
+    Description = "Routes outgoing train from Platform 6 -> Dovedale Central.",
+    Callback = function() 
+        if not checkDCClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "Dovedale Central must accept your train first.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform6_DC", "Platform 6", "Dovedale Central") 
+    end
 })
 
 Tabs.DE:AddSection("Arrivals from Satus")
@@ -366,6 +449,45 @@ Tabs.DE:AddButton({
     Callback = function() executeRoute("Cosdale_Platform6", "Cosdale Harbour", "Platform 6") end
 })
 
+-- NEW: Departures to Cosdale Harbour Section
+Tabs.DE:AddSection("Departures to Cosdale Harbour")
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 2",
+    Description = "Routes outgoing train from Platform 2 -> Cosdale Harbour.",
+    Callback = function() 
+        if not checkCHClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Cosdale Harbour has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform2_CH", "Platform 2", "Cosdale Harbour") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 4",
+    Description = "Routes outgoing train from Platform 4 -> Cosdale Harbour.",
+    Callback = function() 
+        if not checkCHClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Cosdale Harbour has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform4_CH", "Platform 4", "Cosdale Harbour") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 6",
+    Description = "Routes outgoing train from Platform 6 -> Cosdale Harbour.",
+    Callback = function() 
+        if not checkCHClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Cosdale Harbour has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform6_CH", "Platform 6", "Cosdale Harbour") 
+    end
+})
+
 Tabs.DE:AddSection("Frame Control")
 
 Tabs.DE:AddButton({
@@ -387,22 +509,21 @@ Tabs.DE:AddButton({
                 return
             end
 
-            if not InterlockingModule or not InterlockingModule.LeverConfig then
+            if not InterlockingModule or not InterlockingModule.Boxes or not InterlockingModule.Boxes.DE.LeverConfig then
                 Fluent:Notify({ Title = "Error", Content = "Interlocking data failed to initialize.", Duration = 4 })
                 return
             end
 
             local activeLevers = {}
             for i = 1, 49 do
-                -- Use string.format to ensure numbers 1-9 become 01-09
                 local leverName = string.format("DE_%02d", i)
                 local lever = frameDE:FindFirstChild(leverName)
                 
                 if lever then
                     local pulled = lever:FindFirstChild("Values") and lever.Values:FindFirstChild("Pulled")
                     if pulled and pulled.Value == true then
-                        local leverData = InterlockingModule.LeverConfig[leverName]
-                        local priority = leverData and leverData.ResetPriority or (InterlockingModule.DefaultPriority or 5)
+                        local leverData = InterlockingModule.Boxes.DE.LeverConfig[leverName]
+                        local priority = leverData and leverData.ResetPriority or (InterlockingModule.Boxes.DE.DefaultPriority or 5)
                         
                         table.insert(activeLevers, { Name = leverName, Priority = priority })
                     end
@@ -414,7 +535,7 @@ Tabs.DE:AddButton({
             end)
 
             for _, data in ipairs(activeLevers) do
-                print(string.format("Resetting: %s | Assumed Priority: %d", data.Name, data.Priority))
+                print(string.format("Resetting: %s | Assumed Priority: %s", data.Name, tostring(data.Priority)))
                 pullLeverToState(frameDE, data.Name, false)
                 task.wait(math.random(4, 9) / 10)
             end
