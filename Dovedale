@@ -341,6 +341,22 @@ local function checkDCClearance()
     return false
 end
 
+local function checkSATClearance()
+    local block = Workspace:FindFirstChild("TokenlessBlocks DE - SAT")
+    if not block then return false end
+    
+    local states = block:FindFirstChild("States")
+    if not states then return false end
+    
+    local dial = states:FindFirstChild("Dial")
+    
+    if dial and dial.Value == 3 then
+        return true
+    end
+    
+    return false
+end
+
 local function checkCHClearance()
     local block = Workspace:FindFirstChild("TokenlessBlocks DE - CH")
     if not block then return false end
@@ -447,6 +463,56 @@ Tabs.DE:AddButton({
     Title = "Route to Platform 4",
     Description = "Routes incoming train from Satus to Platform 4.",
     Callback = function() executeRoute("Satus_Platform4", "Satus", "Platform 4") end
+})
+
+Tabs.DE:AddSection("Departures to Satus")
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 1",
+    Description = "Routes outgoing train from Platform 1 to Satus.",
+    Callback = function() 
+        if not checkSATClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Satus has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform1_SAT", "Platform 1", "Satus") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 2",
+    Description = "Routes outgoing train from Platform 2 to Satus.",
+    Callback = function() 
+        if not checkSATClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Satus has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform2_SAT", "Platform 2", "Satus") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 3",
+    Description = "Routes outgoing train from Platform 3 to Satus.",
+    Callback = function() 
+        if not checkSATClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Satus has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform3_SAT", "Platform 3", "Satus") 
+    end
+})
+
+Tabs.DE:AddButton({
+    Title = "Dispatch Platform 5",
+    Description = "Routes outgoing train from Platform 5 to Satus.",
+    Callback = function() 
+        if not checkSATClearance() then
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Satus has not been cleared.", Duration = 4 })
+            return
+        end
+        executeRoute("Departure_Platform5_SAT", "Platform 5", "Satus") 
+    end
 })
 
 Tabs.DE:AddSection("Arrivals from Cosdale Harbour")
