@@ -16,8 +16,13 @@ local Tabs = {
 }
 
 local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+local task_wait = task.wait
+local os_clock = os.clock
+local math_random = math.random
 
 local InterlockingModule = nil
 pcall(function()
@@ -49,7 +54,7 @@ for _, data in ipairs(LocationData) do
 end
 
 local function getLiteralBoxData(id)
-    local boxSystem = workspace:FindFirstChild("BoxSystem")
+    local boxSystem = Workspace:FindFirstChild("BoxSystem")
     local targetBox = boxSystem and boxSystem:FindFirstChild(id)
     if not targetBox then return end
 
@@ -67,7 +72,7 @@ end
 local isDovedaleActive = false
 
 task.spawn(function()
-    while task.wait(1) do
+    while task_wait(1) do
         local hostUI = PlayerGui:FindFirstChild("BoxHostUI")
         if hostUI and hostUI.Enabled then
             local manageBox = hostUI:FindFirstChild("ManageBox")
@@ -147,11 +152,11 @@ BoxToggle:OnChanged(function(State)
                             if hrp and tpOut then
                                 if humanoid and humanoid.Sit then
                                     humanoid.Jump = true
-                                    task.wait(0.2)
+                                    task_wait(0.2)
                                 end
                                 
                                 hrp.CFrame = tpOut:GetPivot()
-                                task.wait(0.6)
+                                task_wait(0.6)
 
                                 if prompt then
                                     prompt.Enabled = true
@@ -159,7 +164,7 @@ BoxToggle:OnChanged(function(State)
                                 end
 
                                 Fluent:Notify({ Title = "Assignment", Content = string.format("Assigning you to the %s Signal Box...", boxData.Name), Duration = 3 })
-                                task.wait(2.2)
+                                task_wait(2.2)
 
                                 local updatedHostUI = PlayerGui:FindFirstChild("BoxHostUI")
                                 if updatedHostUI and updatedHostUI.Enabled then
@@ -181,9 +186,9 @@ BoxToggle:OnChanged(function(State)
                 BoxToggle:SetValue(false)
                 break
             elseif not success then
-                task.wait(1)
+                task_wait(1)
             else
-                task.wait(3)
+                task_wait(3)
             end
         end
         isProcessing = false
@@ -201,7 +206,6 @@ local function pullLeverToState(frameDE, leverName, targetState)
     if pulled and clickDetector then
         if pulled.Value ~= targetState then
             
-            -- Updated to target InterlockingModule.Boxes.DE
             if targetState == true and InterlockingModule and InterlockingModule.Boxes and InterlockingModule.Boxes.DE.LeverConfig then
                 local config = InterlockingModule.Boxes.DE.LeverConfig[leverName]
                 if config and config.ReleaseName then
@@ -214,9 +218,9 @@ local function pullLeverToState(frameDE, leverName, targetState)
 
                         if isPressed and releaseClick and isPressed.Value == false then
                             fireclickdetector(releaseClick)
-                            local releaseTimeout = os.clock() + 3
-                            while isPressed.Value == false and os.clock() < releaseTimeout do
-                                task.wait()
+                            local releaseTimeout = os_clock() + 3
+                            while isPressed.Value == false and os_clock() < releaseTimeout do
+                                task_wait()
                             end
                         end
                     end
@@ -225,9 +229,9 @@ local function pullLeverToState(frameDE, leverName, targetState)
 
             fireclickdetector(clickDetector)
             
-            local timeout = os.clock() + 5
-            while pulled.Value ~= targetState and os.clock() < timeout do
-                task.wait()
+            local timeout = os_clock() + 5
+            while pulled.Value ~= targetState and os_clock() < timeout do
+                task_wait()
             end
             
             return pulled.Value == targetState
@@ -243,7 +247,6 @@ local function executeRoute(routeKey, originName, platformName)
         return
     end
 
-    -- Updated to check for Boxes.DE structure
     if not InterlockingModule or not InterlockingModule.Boxes or not InterlockingModule.Boxes.DE.Routes then
         Fluent:Notify({ Title = "Data Missing", Content = "Route module failed to initialize. Try re-executing.", Duration = 5 })
         return
@@ -256,7 +259,7 @@ local function executeRoute(routeKey, originName, platformName)
     end
 
     task.spawn(function()
-        local signalSystems = workspace:FindFirstChild("Interlocking_Switches/Signals")
+        local signalSystems = Workspace:FindFirstChild("Interlocking_Switches/Signals")
         local leverFrames = signalSystems and signalSystems:FindFirstChild("Leverframes")
         local frameDE = leverFrames and leverFrames:FindFirstChild("DE")
 
@@ -280,7 +283,7 @@ local function executeRoute(routeKey, originName, platformName)
             if step.Group then
                 local shuffled = {unpack(step.Group)}
                 for i = #shuffled, 2, -1 do
-                    local j = math.random(i)
+                    local j = math_random(i)
                     shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
                 end
                 for _, leverName in ipairs(shuffled) do
@@ -295,16 +298,15 @@ local function executeRoute(routeKey, originName, platformName)
                 Fluent:Notify({ Title = "Notice", Content = string.format("Failed to interact with %s. Sequence aborted.", leverName), Duration = 4 })
                 return
             end
-            task.wait(math.random(4, 9) / 10)
+            task_wait(math_random(4, 9) / 10)
         end
 
         Fluent:Notify({ Title = "Routing Complete", Content = string.format("Dispatching train from %s to %s.", originName, platformName), Duration = 5 })
     end)
 end
 
--- NEW HELPER: Checks if the DC telegraph accepts the train
 local function checkDCClearance()
-    local telegraph = workspace:FindFirstChild("PenguinTelegraph")
+    local telegraph = Workspace:FindFirstChild("PenguinTelegraph")
     if not telegraph then return false end
     
     local link = telegraph:FindFirstChild("DE - DC")
@@ -321,9 +323,8 @@ local function checkDCClearance()
     return false
 end
 
--- NEW HELPER: Checks if the Tokenless Block to Cosdale Harbour accepts the train
 local function checkCHClearance()
-    local block = workspace:FindFirstChild("TokenlessBlocks DE - CH")
+    local block = Workspace:FindFirstChild("TokenlessBlocks DE - CH")
     if not block then return false end
     
     local states = block:FindFirstChild("States")
@@ -334,7 +335,6 @@ local function checkCHClearance()
     local dial = states:FindFirstChild("Dial")
     local whoCanReset = states:FindFirstChild("WhoCanReset")
     
-    -- Ensure all conditions strictly match
     if isCleared and isCleared.Value == -1 
        and isLocked and isLocked.Value == true 
        and dial and dial.Value == 3 
@@ -449,7 +449,6 @@ Tabs.DE:AddButton({
     Callback = function() executeRoute("Cosdale_Platform6", "Cosdale Harbour", "Platform 6") end
 })
 
--- NEW: Departures to Cosdale Harbour Section
 Tabs.DE:AddSection("Departures to Cosdale Harbour")
 
 Tabs.DE:AddButton({
@@ -500,7 +499,7 @@ Tabs.DE:AddButton({
         end
 
         task.spawn(function()
-            local signalSystems = workspace:FindFirstChild("Interlocking_Switches/Signals")
+            local signalSystems = Workspace:FindFirstChild("Interlocking_Switches/Signals")
             local leverFrames = signalSystems and signalSystems:FindFirstChild("Leverframes")
             local frameDE = leverFrames and leverFrames:FindFirstChild("DE")
 
@@ -537,7 +536,7 @@ Tabs.DE:AddButton({
             for _, data in ipairs(activeLevers) do
                 print(string.format("Resetting: %s | Assumed Priority: %s", data.Name, tostring(data.Priority)))
                 pullLeverToState(frameDE, data.Name, false)
-                task.wait(math.random(4, 9) / 10)
+                task_wait(math_random(4, 9) / 10)
             end
 
             Fluent:Notify({ Title = "Reset Complete", Content = "Levers reset successfully in interlocking order.", Duration = 4 })
