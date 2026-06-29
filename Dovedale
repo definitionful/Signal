@@ -305,6 +305,24 @@ local function executeRoute(routeKey, originName, platformName)
     end)
 end
 
+-- ========================================================
+-- SYSTEM CLEARANCE & SAFETY CHECKS
+-- ========================================================
+
+local function checkDECrossing()
+    local crossing = Workspace:FindFirstChild("DECrossing")
+    if not crossing then return false end
+    
+    local active = crossing:FindFirstChild("Active")
+    local free = crossing:FindFirstChild("Free")
+    
+    if active and free and active.Value == true and free.Value == true then
+        return true
+    end
+    
+    return false
+end
+
 local function checkDCClearance()
     local telegraph = Workspace:FindFirstChild("PenguinTelegraph")
     if not telegraph then return false end
@@ -330,38 +348,34 @@ local function checkCHClearance()
     local states = block:FindFirstChild("States")
     if not states then return false end
     
-    local isCleared = states:FindFirstChild("IsCleared")
-    local isLocked = states:FindFirstChild("IsLocked")
     local dial = states:FindFirstChild("Dial")
-    local whoCanReset = states:FindFirstChild("WhoCanReset")
     
-    if isCleared and isCleared.Value == -1 
-       and isLocked and isLocked.Value == true 
-       and dial and dial.Value == 3 
-       and whoCanReset and whoCanReset.Value == -1 then
+    if dial and dial.Value == 3 then
         return true
     end
     
     return false
 end
 
+-- ========================================================
+
 Tabs.DE:AddSection("Arrivals from Dovedale Central")
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 3",
-    Description = "Routes incoming train from Dovedale Central -> Platform 3.",
+    Description = "Routes incoming train from Dovedale Central to Platform 3.",
     Callback = function() executeRoute("Dovedale_Platform3", "Dovedale Central", "Platform 3") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 5",
-    Description = "Routes incoming train from Dovedale Central -> Platform 5.",
+    Description = "Routes incoming train from Dovedale Central to Platform 5.",
     Callback = function() executeRoute("Dovedale_Platform5", "Dovedale Central", "Platform 5") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 6",
-    Description = "Routes incoming train from Dovedale Central -> Platform 6.",
+    Description = "Routes incoming train from Dovedale Central to Platform 6.",
     Callback = function() executeRoute("Dovedale_Platform6", "Dovedale Central", "Platform 6") end
 })
 
@@ -369,10 +383,14 @@ Tabs.DE:AddSection("Departures to Dovedale Central")
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 2",
-    Description = "Routes outgoing train from Platform 2 -> Dovedale Central.",
+    Description = "Routes outgoing train from Platform 2 to Dovedale Central.",
     Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
         if not checkDCClearance() then
-            Fluent:Notify({ Title = "Clearance Denied", Content = "Dovedale Central must accept your train first.", Duration = 4 })
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Telegraph Block to Dovedale Central has not been cleared.", Duration = 4 })
             return
         end
         executeRoute("Departure_Platform2_DC", "Platform 2", "Dovedale Central") 
@@ -381,10 +399,14 @@ Tabs.DE:AddButton({
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 4",
-    Description = "Routes outgoing train from Platform 4 -> Dovedale Central.",
+    Description = "Routes outgoing train from Platform 4 to Dovedale Central.",
     Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
         if not checkDCClearance() then
-            Fluent:Notify({ Title = "Clearance Denied", Content = "Dovedale Central must accept your train first.", Duration = 4 })
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Telegraph Block to Dovedale Central has not been cleared.", Duration = 4 })
             return
         end
         executeRoute("Departure_Platform4_DC", "Platform 4", "Dovedale Central") 
@@ -393,10 +415,14 @@ Tabs.DE:AddButton({
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 6",
-    Description = "Routes outgoing train from Platform 6 -> Dovedale Central.",
+    Description = "Routes outgoing train from Platform 6 to Dovedale Central.",
     Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
         if not checkDCClearance() then
-            Fluent:Notify({ Title = "Clearance Denied", Content = "Dovedale Central must accept your train first.", Duration = 4 })
+            Fluent:Notify({ Title = "Clearance Denied", Content = "The Telegraph Block to Dovedale Central has not been cleared.", Duration = 4 })
             return
         end
         executeRoute("Departure_Platform6_DC", "Platform 6", "Dovedale Central") 
@@ -407,19 +433,19 @@ Tabs.DE:AddSection("Arrivals from Satus")
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 1",
-    Description = "Routes incoming train from Satus -> Platform 1.",
+    Description = "Routes incoming train from Satus to Platform 1.",
     Callback = function() executeRoute("Satus_Platform1", "Satus", "Platform 1") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 2",
-    Description = "Routes incoming train from Satus -> Platform 2.",
+    Description = "Routes incoming train from Satus to Platform 2.",
     Callback = function() executeRoute("Satus_Platform2", "Satus", "Platform 2") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 4",
-    Description = "Routes incoming train from Satus -> Platform 4.",
+    Description = "Routes incoming train from Satus to Platform 4.",
     Callback = function() executeRoute("Satus_Platform4", "Satus", "Platform 4") end
 })
 
@@ -427,25 +453,25 @@ Tabs.DE:AddSection("Arrivals from Cosdale Harbour")
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 2",
-    Description = "Routes incoming train from Cosdale Harbour -> Platform 2.",
+    Description = "Routes incoming train from Cosdale Harbour to Platform 2.",
     Callback = function() executeRoute("Cosdale_Platform2", "Cosdale Harbour", "Platform 2") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 3",
-    Description = "Routes incoming train from Cosdale Harbour -> Platform 3.",
+    Description = "Routes incoming train from Cosdale Harbour to Platform 3.",
     Callback = function() executeRoute("Cosdale_Platform3", "Cosdale Harbour", "Platform 3") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 5",
-    Description = "Routes incoming train from Cosdale Harbour -> Platform 5.",
+    Description = "Routes incoming train from Cosdale Harbour to Platform 5.",
     Callback = function() executeRoute("Cosdale_Platform5", "Cosdale Harbour", "Platform 5") end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 6",
-    Description = "Routes incoming train from Cosdale Harbour -> Platform 6.",
+    Description = "Routes incoming train from Cosdale Harbour to Platform 6.",
     Callback = function() executeRoute("Cosdale_Platform6", "Cosdale Harbour", "Platform 6") end
 })
 
@@ -453,8 +479,12 @@ Tabs.DE:AddSection("Departures to Cosdale Harbour")
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 2",
-    Description = "Routes outgoing train from Platform 2 -> Cosdale Harbour.",
+    Description = "Routes outgoing train from Platform 2 to Cosdale Harbour.",
     Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
         if not checkCHClearance() then
             Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Cosdale Harbour has not been cleared.", Duration = 4 })
             return
@@ -465,8 +495,12 @@ Tabs.DE:AddButton({
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 4",
-    Description = "Routes outgoing train from Platform 4 -> Cosdale Harbour.",
+    Description = "Routes outgoing train from Platform 4 to Cosdale Harbour.",
     Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
         if not checkCHClearance() then
             Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Cosdale Harbour has not been cleared.", Duration = 4 })
             return
@@ -477,8 +511,12 @@ Tabs.DE:AddButton({
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 6",
-    Description = "Routes outgoing train from Platform 6 -> Cosdale Harbour.",
+    Description = "Routes outgoing train from Platform 6 to Cosdale Harbour.",
     Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
         if not checkCHClearance() then
             Fluent:Notify({ Title = "Clearance Denied", Content = "The Tokenless Block to Cosdale Harbour has not been cleared.", Duration = 4 })
             return
