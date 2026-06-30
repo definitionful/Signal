@@ -435,8 +435,8 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 2 to Dovedale Central.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         if not checkDCClearance() then Messages.ClearanceDenied("Dovedale Central") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         executeRoute("Departure_Platform2_DC", "Platform 2", "Dovedale Central") 
     end
 })
@@ -446,8 +446,8 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 4 to Dovedale Central.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         if not checkDCClearance() then Messages.ClearanceDenied("Dovedale Central") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         executeRoute("Departure_Platform4_DC", "Platform 4", "Dovedale Central") 
     end
 })
@@ -457,8 +457,8 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 6 to Dovedale Central.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         if not checkDCClearance() then Messages.ClearanceDenied("Dovedale Central") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         executeRoute("Departure_Platform6_DC", "Platform 6", "Dovedale Central") 
     end
 })
@@ -583,8 +583,8 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 2 to Cosdale Harbour.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         if not checkCHClearance() then Messages.ClearanceDenied("Cosdale Harbour") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         executeRoute("Departure_Platform2_CH", "Platform 2", "Cosdale Harbour") 
     end
 })
@@ -594,8 +594,8 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 4 to Cosdale Harbour.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         if not checkCHClearance() then Messages.ClearanceDenied("Cosdale Harbour") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         executeRoute("Departure_Platform4_CH", "Platform 4", "Cosdale Harbour") 
     end
 })
@@ -605,8 +605,8 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 6 to Cosdale Harbour.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         if not checkCHClearance() then Messages.ClearanceDenied("Cosdale Harbour") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured() return end
         executeRoute("Departure_Platform6_CH", "Platform 6", "Cosdale Harbour") 
     end
 })
