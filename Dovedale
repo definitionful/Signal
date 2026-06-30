@@ -611,7 +611,71 @@ Tabs.DE:AddButton({
     end
 })
 
-Tabs.DE:AddSection("Frame Control")
+Tabs.DE:AddSection("Frame & Crossing Control")
+
+Tabs.DE:AddButton({
+    Title = "Operate Level Crossing",
+    Description = "Raises or lowers the level crossing based on its current state.",
+    Callback = function()
+        if not isPlayerInsideBox() then Messages.PositionRequired() return end
+        if not isDovedaleActive then Messages.NotHosting("Dovedale East") return end
+
+        task.spawn(function()
+            local crossing = Workspace:FindFirstChild("DECrossing")
+            if not crossing then return end
+            
+            local active = crossing:FindFirstChild("Active")
+            local free = crossing:FindFirstChild("Free")
+            local controller = crossing:FindFirstChild("CrossingController")
+            local working = controller and controller:FindFirstChild("Working")
+            
+            if not (active and free and working) then return end
+
+            -- If the crossing is secured for trains (Active=true, Free=true), RAISE it for cars.
+            if active.Value == true and free.Value == true then
+                local raiseBtn = working:FindFirstChild("ButtonRaise")
+                local clickPart = raiseBtn and raiseBtn:FindFirstChild("ClickPart")
+                local detector = clickPart and clickPart:FindFirstChildOfClass("ClickDetector")
+                
+                if detector then
+                    task_wait(math_random(4, 9) / 10) -- Reasonable human delay
+                    fireclickdetector(detector)
+                    
+                    -- Wait for the state to transition to False/False
+                    local timeout = os_clock() + 15
+                    while (active.Value == true or free.Value == true) and os_clock() < timeout do
+                        task_wait(0.1)
+                    end
+                    
+                    if active.Value == false and free.Value == false then
+                        if Messages.CrossingRaised then Messages.CrossingRaised() end
+                    end
+                end
+
+            -- If the crossing is open for cars (Active=false, Free=false), LOWER it for trains.
+            elseif active.Value == false and free.Value == false then
+                local lowerBtn = working:FindFirstChild("ButtonLower")
+                local clickPart = lowerBtn and lowerBtn:FindFirstChild("ClickPart")
+                local detector = clickPart and clickPart:FindFirstChildOfClass("ClickDetector")
+                
+                if detector then
+                    task_wait(math_random(4, 9) / 10) -- Reasonable human delay
+                    fireclickdetector(detector)
+                    
+                    -- Wait for the state to transition to True/True
+                    local timeout = os_clock() + 15
+                    while (active.Value == false or free.Value == false) and os_clock() < timeout do
+                        task_wait(0.1)
+                    end
+                    
+                    if active.Value == true and free.Value == true then
+                        if Messages.CrossingLowered then Messages.CrossingLowered() end
+                    end
+                end
+            end
+        end)
+    end
+})
 
 Tabs.DE:AddButton({
     Title = "Reset Lever Frame",
