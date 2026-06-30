@@ -36,11 +36,10 @@ local task_wait = task.wait
 local os_clock = os.clock
 local math_random = math.random
 
--- 4. Handling HTTP Initialization Failures Safely
-local InterlockingModule = nil
-local httpSuccess, httpErr = pcall(function()
+local httpSuccess, InterlockingModule = pcall(function()
     local url = "https://raw.githubusercontent.com/definitionful/Signal/refs/heads/main/Signal"
-    InterlockingModule = loadstring(game:HttpGet(url))()
+    local fetchedData = loadstring(game:HttpGet(url))
+    return fetchedData()
 end)
 
 if not httpSuccess or type(InterlockingModule) ~= "table" then
@@ -49,7 +48,7 @@ if not httpSuccess or type(InterlockingModule) ~= "table" then
         Content = "Failed to load interlocking data. Please check your connection or the script URL.",
         Duration = 8
     })
-    return -- Safely halt execution
+    return
 end
 
 local LocationData = {
@@ -93,7 +92,8 @@ end
 
 local isDovedaleActive = false
 
--- 3. Event-Driven Optimization over Polling
+local UIConnections = {}
+
 local function updateBoxState()
     local hostUI = PlayerGui:FindFirstChild("BoxHostUI")
     if hostUI and hostUI.Enabled then
@@ -109,13 +109,20 @@ end
 
 PlayerGui.DescendantAdded:Connect(function(descendant)
     if descendant.Name == "BoxHostUI" then
-        descendant:GetPropertyChangedSignal("Enabled"):Connect(updateBoxState)
+        if UIConnections.BoxHostUI then 
+            UIConnections.BoxHostUI:Disconnect() 
+        end
+        UIConnections.BoxHostUI = descendant:GetPropertyChangedSignal("Enabled"):Connect(updateBoxState)
         updateBoxState()
     elseif descendant.Name == "Title" and descendant.Parent and descendant.Parent.Name == "Header" then
-        descendant:GetPropertyChangedSignal("Text"):Connect(updateBoxState)
+        if UIConnections.Title then 
+            UIConnections.Title:Disconnect() 
+        end
+        UIConnections.Title = descendant:GetPropertyChangedSignal("Text"):Connect(updateBoxState)
         updateBoxState()
     end
 end)
+
 updateBoxState()
 
 local BoxToggle = Tabs.Main:AddToggle("AutoHostToggle", {
@@ -284,7 +291,16 @@ local function executeRoute(routeKey, originName, platformName)
         return
     end
 
-    for _, name in ipairs(routeData.RequiredLevers) do
+    local requiredLevers = {}
+    for _, step in ipairs(routeData.Sequence) do
+        if step.Group then
+            for _, leverName in ipairs(step.Group) do
+                table.insert(requiredLevers, leverName)
+            end
+        end
+    end
+
+    for _, name in ipairs(requiredLevers) do
         if LeverLocks[name] then
             Fluent:Notify({ Title = "Please Wait", Content = "Levers for this route (" .. name .. ") are currently in motion.", Duration = 3 })
             return
@@ -292,7 +308,7 @@ local function executeRoute(routeKey, originName, platformName)
     end
 
     task.spawn(function()
-        for _, name in ipairs(routeData.RequiredLevers) do
+        for _, name in ipairs(requiredLevers) do
             LeverLocks[name] = true
         end
 
@@ -302,17 +318,17 @@ local function executeRoute(routeKey, originName, platformName)
 
         if not frameDE then
             Fluent:Notify({ Title = "Error", Content = "The Dovedale East lever frame could not be located.", Duration = 4 })
-            for _, name in ipairs(routeData.RequiredLevers) do LeverLocks[name] = false end
+            for _, name in ipairs(requiredLevers) do LeverLocks[name] = false end
             return
         end
 
-        for _, name in ipairs(routeData.RequiredLevers) do
+        for _, name in ipairs(requiredLevers) do
             local lever = frameDE:FindFirstChild(name)
             local pulled = lever and lever:FindFirstChild("Values") and lever.Values:FindFirstChild("Pulled")
             
             if not pulled or pulled.Value == true then
                 Fluent:Notify({ Title = "Notice", Content = "One or more required levers are already active. Please reset the frame first.", Duration = 5 })
-                for _, lockName in ipairs(routeData.RequiredLevers) do LeverLocks[lockName] = false end
+                for _, lockName in ipairs(requiredLevers) do LeverLocks[lockName] = false end
                 return
             end
         end
@@ -335,7 +351,7 @@ local function executeRoute(routeKey, originName, platformName)
             local success = pullLeverToState(frameDE, leverName, true)
             if not success then
                 Fluent:Notify({ Title = "Notice", Content = string.format("Failed to interact with %s. Sequence aborted.", leverName), Duration = 4 })
-                for _, name in ipairs(routeData.RequiredLevers) do LeverLocks[name] = false end
+                for _, name in ipairs(requiredLevers) do LeverLocks[name] = false end
                 return
             end
             task_wait(math_random(4, 9) / 10)
@@ -344,7 +360,7 @@ local function executeRoute(routeKey, originName, platformName)
         Fluent:Notify({ Title = "Routing Complete", Content = string.format("Dispatching train from %s to %s.", originName, platformName), Duration = 5 })
         task_wait(2)
         
-        for _, name in ipairs(routeData.RequiredLevers) do
+        for _, name in ipairs(requiredLevers) do
             LeverLocks[name] = false
         end
     end)
