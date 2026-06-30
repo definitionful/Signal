@@ -380,19 +380,37 @@ Tabs.DE:AddSection("Arrivals from Dovedale Central")
 Tabs.DE:AddButton({
     Title = "Route to Platform 3",
     Description = "Routes incoming train from Dovedale Central to Platform 3.",
-    Callback = function() executeRoute("Dovedale_Platform3", "Dovedale Central", "Platform 3") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Dovedale_Platform3", "Dovedale Central", "Platform 3") 
+    end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 5",
     Description = "Routes incoming train from Dovedale Central to Platform 5.",
-    Callback = function() executeRoute("Dovedale_Platform5", "Dovedale Central", "Platform 5") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Dovedale_Platform5", "Dovedale Central", "Platform 5") 
+    end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 6",
     Description = "Routes incoming train from Dovedale Central to Platform 6.",
-    Callback = function() executeRoute("Dovedale_Platform6", "Dovedale Central", "Platform 6") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Dovedale_Platform6", "Dovedale Central", "Platform 6") 
+    end
 })
 
 Tabs.DE:AddSection("Departures to Dovedale Central")
@@ -520,25 +538,49 @@ Tabs.DE:AddSection("Arrivals from Cosdale Harbour")
 Tabs.DE:AddButton({
     Title = "Route to Platform 2",
     Description = "Routes incoming train from Cosdale Harbour to Platform 2.",
-    Callback = function() executeRoute("Cosdale_Platform2", "Cosdale Harbour", "Platform 2") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Cosdale_Platform2", "Cosdale Harbour", "Platform 2") 
+    end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 3",
     Description = "Routes incoming train from Cosdale Harbour to Platform 3.",
-    Callback = function() executeRoute("Cosdale_Platform3", "Cosdale Harbour", "Platform 3") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Cosdale_Platform3", "Cosdale Harbour", "Platform 3") 
+    end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 5",
     Description = "Routes incoming train from Cosdale Harbour to Platform 5.",
-    Callback = function() executeRoute("Cosdale_Platform5", "Cosdale Harbour", "Platform 5") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Cosdale_Platform5", "Cosdale Harbour", "Platform 5") 
+    end
 })
 
 Tabs.DE:AddButton({
     Title = "Route to Platform 6",
     Description = "Routes incoming train from Cosdale Harbour to Platform 6.",
-    Callback = function() executeRoute("Cosdale_Platform6", "Cosdale Harbour", "Platform 6") end
+    Callback = function() 
+        if not checkDECrossing() then
+            Fluent:Notify({ Title = "Crossing Unsecured", Content = "The Dovedale East Level Crossing has not been secured.", Duration = 4 })
+            return
+        end
+        executeRoute("Cosdale_Platform6", "Cosdale Harbour", "Platform 6") 
+    end
 })
 
 Tabs.DE:AddSection("Departures to Cosdale Harbour")
