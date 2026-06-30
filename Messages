@@ -91,4 +91,12 @@ function Notifications.ResetComplete()
     sendMsg("Reset Complete", "Levers reset successfully in interlocking order.", 4) 
 end
 
+function Notifications.CrossingRaised() 
+    sendMsg("Crossing Raised", "The Dovedale East Level Crossing has been opened to road traffic.", 4) 
+end
+
+function Notifications.CrossingLowered() 
+    sendMsg("Crossing Secured", "The Dovedale East Level Crossing has been lowered and secured.", 4) 
+end
+
 return Notifications
