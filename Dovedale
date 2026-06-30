@@ -3,7 +3,7 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 -- Initialize Custom Messages Module
 local Messages = nil
 pcall(function()
-    local url = "YOUR_MESSAGES_RAW_URL_HERE" 
+    local url = "https://raw.githubusercontent.com/definitionful/DR/refs/heads/main/Messages" 
     Messages = loadstring(game:HttpGet(url))()
     Messages.Init(Fluent)
 end)
@@ -34,7 +34,7 @@ local math_random = math.random
 
 local InterlockingModule = nil
 pcall(function()
-    local url = "https://raw.githubusercontent.com/definitionful/Signal/refs/heads/main/Signal"
+    local url = "https://raw.githubusercontent.com/definitionful/DR/refs/heads/main/Interlocking"
     InterlockingModule = loadstring(game:HttpGet(url))()
 end)
 
