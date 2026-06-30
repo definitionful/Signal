@@ -7,7 +7,6 @@ local InterlockingData = {
                 ["DE_05"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
                 ["DE_41"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
                 ["DE_45"] = { Type = "Distant", ResetPriority = 1, Color = "Yellow" },
-
                 ["DE_03"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE03" },
                 ["DE_04"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE04" },
                 ["DE_06"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE06" },
@@ -25,7 +24,6 @@ local InterlockingData = {
                 ["DE_42"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red", ReleaseName = "electricRelease_DE42" },
                 ["DE_43"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
                 ["DE_44"] = { Type = "Stop/Shunt", ResetPriority = 2, Color = "Red" },
-
                 ["DE_14"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
                 ["DE_16"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
                 ["DE_18"] = { Type = "Spare FPL", ResetPriority = 3, Color = "White over Blue" },
@@ -34,12 +32,10 @@ local InterlockingData = {
                 ["DE_27"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
                 ["DE_31"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
                 ["DE_33"] = { Type = "FPL",       ResetPriority = 3, Color = "Blue" },
-
                 ["DE_12"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
                 ["DE_15"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
                 ["DE_17"] = { Type = "Combined Points/FPL", ResetPriority = 3.9, Color = "Blue over Black" },
                 ["DE_19"] = { Type = "Combined Points/FPL", ResetPriority = 4.1, Color = "Blue over Black" },
-                
                 ["DE_21"] = { Type = "Combined Points/FPL", ResetPriority = 4, Color = "Blue over Black" },
                 ["DE_23"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
                 ["DE_26"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
@@ -47,7 +43,6 @@ local InterlockingData = {
                 ["DE_30"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
                 ["DE_32"] = { Type = "Points",              ResetPriority = 4, Color = "Black" },
             },
-            
             Routes = {
                 ["Dovedale_Platform3"] = { RequiredLevers = {"DE_03", "DE_18"}, Sequence = {{Group = {"DE_18"}}, {Group = {"DE_03"}}} },
                 ["Dovedale_Platform5"] = { RequiredLevers = {"DE_06", "DE_18", "DE_19", "DE_20"}, Sequence = {{Group = {"DE_19"}}, {Group = {"DE_18", "DE_20"}}, {Group = {"DE_06"}}} },
@@ -57,88 +52,18 @@ local InterlockingData = {
                 ["Satus_Platform4"] = { RequiredLevers = {"DE_23", "DE_31", "DE_33", "DE_40"}, Sequence = {{Group = {"DE_23"}}, {Group = {"DE_31", "DE_33"}}, {Group = {"DE_40"}}} },
                 ["Cosdale_Platform2"] = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_16"}, Sequence = {{Group = {"DE_12"}}, {Group = {"DE_14", "DE_16"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}}} },
                 ["Cosdale_Platform3"] = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18"}, Sequence = {{Group = {"DE_12", "DE_15"}}, {Group = {"DE_14", "DE_18"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}}} },
-                ["Cosdale_Platform5"] = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20"}, Sequence = {{Group = {"DE_12", "DE_15", "DE_19"}}, {Group = {"DE_14", "DE_18", "DE_20"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}}} },
-                ["Cosdale_Platform6"] = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20", "DE_21"}, Sequence = {{Group = {"DE_12", "DE_15", "DE_19", "DE_21"}}, {Group = {"DE_14", "DE_18", "DE_20"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}}} },
-
-                ["Departure_Platform2_DC"] = {
-                    RequiredLevers = {"DE_37", "DE_42"},
-                    Sequence = {
-                        {Group = {"DE_42"}},
-                        {Group = {"DE_37"}}
-                    }
-                },
-                ["Departure_Platform4_DC"] = {
-                    RequiredLevers = {"DE_17", "DE_19", "DE_37", "DE_39"},
-                    Sequence = {
-                        {Group = {"DE_19"}},
-                        {Group = {"DE_17"}},
-                        {Group = {"DE_37"}},
-                        {Group = {"DE_39"}}
-                    }
-                },
-                ["Departure_Platform6_DC"] = {
-                    RequiredLevers = {"DE_14", "DE_15", "DE_19", "DE_21", "DE_37", "DE_38"},
-                    Sequence = {
-                        {Group = {"DE_15", "DE_19", "DE_21"}},
-                        {Group = {"DE_37"}},
-                        {Group = {"DE_14"}},
-                        {Group = {"DE_38"}}
-                    }
-                },
-                ["Departure_Platform1_SAT"] = {
-                    RequiredLevers = {"DE_09", "DE_26", "DE_30"},
-                    Sequence = {
-                        {Group = {"DE_26", "DE_30"}},
-                        {Group = {"DE_09"}}
-                    }
-                },
-                ["Departure_Platform2_SAT"] = {
-                    RequiredLevers = {"DE_10", "DE_30"},
-                    Sequence = {
-                        {Group = {"DE_30"}},
-                        {Group = {"DE_10"}}
-                    }
-                },
-                ["Departure_Platform3_SAT"] = {
-                    RequiredLevers = {"DE_04", "DE_28", "DE_30", "DE_32"},
-                    Sequence = {
-                        {Group = {"DE_30"}},
-                        {Group = {"DE_28", "DE_32"}},
-                        {Group = {"DE_04"}}
-                    }
-                },
-                ["Departure_Platform5_SAT"] = {
-                    RequiredLevers = {"DE_07", "DE_22", "DE_23", "DE_32"},
-                    Sequence = {
-                        {Group = {"DE_23", "DE_32"}},
-                        {Group = {"DE_22"}},
-                        {Group = {"DE_07"}}
-                    }
-                },
-                ["Departure_Platform2_CH"] = {
-                    RequiredLevers = {"DE_12", "DE_34", "DE_42"},
-                    Sequence = {
-                        {Group = {"DE_12"}},
-                        {Group = {"DE_42", "DE_34"}}
-                    }
-                },
-                ["Departure_Platform4_CH"] = {
-                    RequiredLevers = {"DE_12", "DE_17", "DE_19", "DE_34", "DE_39"},
-                    Sequence = {
-                        {Group = {"DE_19"}},
-                        {Group = {"DE_17"}},
-                        {Group = {"DE_12"}}, 
-                        {Group = {"DE_39", "DE_34"}}
-                    }
-                },
-                ["Departure_Platform6_CH"] = {
-                    RequiredLevers = {"DE_12", "DE_14", "DE_15", "DE_19", "DE_21", "DE_34", "DE_38"},
-                    Sequence = {
-                        {Group = {"DE_12", "DE_15", "DE_19", "DE_21"}},
-                        {Group = {"DE_14"}},
-                        {Group = {"DE_38", "DE_34"}}
-                    }
-                }
+                ["Cosdale_Platform5"] = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20"}, Sequence = {{Group = {"DE_12", "DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_14", "DE_18", "DE_20"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}}} },
+                ["Cosdale_Platform6"] = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20", "DE_21"}, Sequence = {{Group = {"DE_12", "DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_21"}}, {Group = {"DE_14", "DE_18", "DE_20"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}}} },
+                ["Departure_Platform2_DC"] = { RequiredLevers = {"DE_37", "DE_42"}, Sequence = {{Group = {"DE_42"}}, {Group = {"DE_37"}}} },
+                ["Departure_Platform4_DC"] = { RequiredLevers = {"DE_17", "DE_19", "DE_37", "DE_39"}, Sequence = {{Group = {"DE_19"}}, {Group = {"DE_17"}}, {Group = {"DE_37"}}, {Group = {"DE_39"}}} },
+                ["Departure_Platform6_DC"] = { RequiredLevers = {"DE_14", "DE_15", "DE_19", "DE_21", "DE_37", "DE_38"}, Sequence = {{Group = {"DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_21"}}, {Group = {"DE_37"}}, {Group = {"DE_14"}}, {Group = {"DE_38"}}} },
+                ["Departure_Platform1_SAT"] = { RequiredLevers = {"DE_09", "DE_26", "DE_30"}, Sequence = {{Group = {"DE_26", "DE_30"}}, {Group = {"DE_09"}}} },
+                ["Departure_Platform2_SAT"] = { RequiredLevers = {"DE_10", "DE_30"}, Sequence = {{Group = {"DE_30"}}, {Group = {"DE_10"}}} },
+                ["Departure_Platform3_SAT"] = { RequiredLevers = {"DE_04", "DE_28", "DE_30", "DE_32"}, Sequence = {{Group = {"DE_30"}}, {Group = {"DE_28", "DE_32"}}, {Group = {"DE_04"}}} },
+                ["Departure_Platform5_SAT"] = { RequiredLevers = {"DE_07", "DE_22", "DE_23", "DE_32"}, Sequence = {{Group = {"DE_23", "DE_32"}}, {Group = {"DE_22"}}, {Group = {"DE_07"}}} },
+                ["Departure_Platform2_CH"] = { RequiredLevers = {"DE_12", "DE_34", "DE_42"}, Sequence = {{Group = {"DE_12"}}, {Group = {"DE_42", "DE_34"}}} },
+                ["Departure_Platform4_CH"] = { RequiredLevers = {"DE_12", "DE_17", "DE_19", "DE_34", "DE_39"}, Sequence = {{Group = {"DE_19"}}, {Group = {"DE_17"}}, {Group = {"DE_12"}}, {Group = {"DE_39", "DE_34"}}} },
+                ["Departure_Platform6_CH"] = { RequiredLevers = {"DE_12", "DE_14", "DE_15", "DE_19", "DE_21", "DE_34", "DE_38"}, Sequence = {{Group = {"DE_12", "DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_21"}}, {Group = {"DE_14"}}, {Group = {"DE_38", "DE_34"}}} }
             }
         }
     }
