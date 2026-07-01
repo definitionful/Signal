@@ -1,15 +1,8 @@
--- ==============================================================================
--- DE (Dovedale) Box Configuration
--- ==============================================================================
-
 local DE_Levers = {
-    -- Distant Signals
     ["DE_02"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
     ["DE_05"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
     ["DE_41"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
     ["DE_45"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
-
-    -- Stop/Shunt Signals
     ["DE_03"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_DE03" },
     ["DE_04"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_DE04" },
     ["DE_06"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_DE06" },
@@ -27,8 +20,6 @@ local DE_Levers = {
     ["DE_42"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_DE42" },
     ["DE_43"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red" },
     ["DE_44"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red" },
-
-    -- Points and Facing Point Locks (FPLs)
     ["DE_12"] = { Type = "Combined Points/FPL", ResetPriority = 4,   Color = "Blue over Black" },
     ["DE_14"] = { Type = "Spare FPL",           ResetPriority = 3,   Color = "White over Blue" },
     ["DE_15"] = { Type = "Combined Points/FPL", ResetPriority = 4,   Color = "Blue over Black" },
@@ -50,51 +41,33 @@ local DE_Levers = {
 }
 
 local DE_Routes = {
-    -- Dovedale Platforms
     ["Dovedale_Platform3"]      = { RequiredLevers = {"DE_03", "DE_18"},                                            Sequence = { {Group = {"DE_18"}}, {Group = {"DE_03"}} } },
     ["Dovedale_Platform5"]      = { RequiredLevers = {"DE_06", "DE_18", "DE_19", "DE_20"},                          Sequence = { {Group = {"DE_19"}}, {Group = {"DE_18", "DE_20"}}, {Group = {"DE_06"}} } },
     ["Dovedale_Platform6"]      = { RequiredLevers = {"DE_08", "DE_18", "DE_19", "DE_20", "DE_21"},                 Sequence = { {Group = {"DE_19", "DE_21"}}, {Group = {"DE_20", "DE_18"}}, {Group = {"DE_08"}} } },
-    
-    -- Satus Platforms
     ["Satus_Platform1"]         = { RequiredLevers = {"DE_26", "DE_27", "DE_30", "DE_31", "DE_33", "DE_44"},        Sequence = { {Group = {"DE_26", "DE_30"}}, {Group = {"DE_27", "DE_31", "DE_33"}}, {Group = {"DE_44"}} } },
     ["Satus_Platform2"]         = { RequiredLevers = {"DE_27", "DE_30", "DE_31", "DE_33", "DE_43"},                 Sequence = { {Group = {"DE_30"}}, {Group = {"DE_27", "DE_31", "DE_33"}}, {Group = {"DE_43"}} } },
     ["Satus_Platform4"]         = { RequiredLevers = {"DE_23", "DE_31", "DE_33", "DE_40"},                          Sequence = { {Group = {"DE_23"}}, {Group = {"DE_31", "DE_33"}}, {Group = {"DE_40"}} } },
-    
-    -- Cosdale Platforms
     ["Cosdale_Platform2"]       = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_16"},                 Sequence = { {Group = {"DE_12"}}, {Group = {"DE_14", "DE_16"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}} } },
     ["Cosdale_Platform3"]       = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18"},        Sequence = { {Group = {"DE_12", "DE_15"}}, {Group = {"DE_14", "DE_18"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}} } },
     ["Cosdale_Platform5"]       = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20"}, Sequence = { {Group = {"DE_12", "DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_14", "DE_18", "DE_20"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}} } },
     ["Cosdale_Platform6"]       = { RequiredLevers = {"DE_11", "DE_12", "DE_13", "DE_14", "DE_15", "DE_18", "DE_19", "DE_20", "DE_21"}, Sequence = { {Group = {"DE_12", "DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_21"}}, {Group = {"DE_14", "DE_18", "DE_20"}}, {Group = {"DE_13"}}, {Group = {"DE_11"}} } },
-    
-    -- Departures (DC)
     ["Departure_Platform2_DC"]  = { RequiredLevers = {"DE_37", "DE_42"},                                            Sequence = { {Group = {"DE_42"}}, {Group = {"DE_37"}} } },
     ["Departure_Platform4_DC"]  = { RequiredLevers = {"DE_17", "DE_19", "DE_37", "DE_39"},                          Sequence = { {Group = {"DE_19"}}, {Group = {"DE_17"}}, {Group = {"DE_37"}}, {Group = {"DE_39"}} } },
     ["Departure_Platform6_DC"]  = { RequiredLevers = {"DE_14", "DE_15", "DE_19", "DE_21", "DE_37", "DE_38"},        Sequence = { {Group = {"DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_21"}}, {Group = {"DE_37"}}, {Group = {"DE_14"}}, {Group = {"DE_38"}} } },
-    
-    -- Departures (SAT)
     ["Departure_Platform1_SAT"] = { RequiredLevers = {"DE_09", "DE_26", "DE_30"},                                   Sequence = { {Group = {"DE_26", "DE_30"}}, {Group = {"DE_09"}} } },
     ["Departure_Platform2_SAT"] = { RequiredLevers = {"DE_10", "DE_30"},                                            Sequence = { {Group = {"DE_30"}}, {Group = {"DE_10"}} } },
     ["Departure_Platform3_SAT"] = { RequiredLevers = {"DE_04", "DE_28", "DE_30", "DE_32"},                          Sequence = { {Group = {"DE_30"}}, {Group = {"DE_28", "DE_32"}}, {Group = {"DE_04"}} } },
     ["Departure_Platform5_SAT"] = { RequiredLevers = {"DE_07", "DE_22", "DE_23", "DE_32"},                          Sequence = { {Group = {"DE_23", "DE_32"}}, {Group = {"DE_22"}}, {Group = {"DE_07"}} } },
-    
-    -- Departures (CH)
     ["Departure_Platform2_CH"]  = { RequiredLevers = {"DE_12", "DE_34", "DE_42"},                                   Sequence = { {Group = {"DE_12"}}, {Group = {"DE_42", "DE_34"}} } },
     ["Departure_Platform4_CH"]  = { RequiredLevers = {"DE_12", "DE_17", "DE_19", "DE_34", "DE_39"},                 Sequence = { {Group = {"DE_19"}}, {Group = {"DE_17"}}, {Group = {"DE_12"}}, {Group = {"DE_39", "DE_34"}} } },
     ["Departure_Platform6_CH"]  = { RequiredLevers = {"DE_12", "DE_14", "DE_15", "DE_19", "DE_21", "DE_34", "DE_38"}, Sequence = { {Group = {"DE_12", "DE_15"}}, {Group = {"DE_19"}}, {Group = {"DE_21"}}, {Group = {"DE_14"}}, {Group = {"DE_38", "DE_34"}} } }
 }
 
--- ==============================================================================
--- SAT (Satus) Box Configuration
--- ==============================================================================
-
 local SAT_Levers = {
-    -- Distant Signals
     ["SAT_01"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
     ["SAT_04"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
     ["SAT_27"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
     ["SAT_30"] = { Type = "Distant",             ResetPriority = 1,   Color = "Yellow" },
-
-    -- Stop/Shunt Signals
     ["SAT_02"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_SAT02" },
     ["SAT_03"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_SAT03" },
     ["SAT_05"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_SAT05" },
@@ -108,8 +81,6 @@ local SAT_Levers = {
     ["SAT_26"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red" },
     ["SAT_28"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red", ReleaseName = "electricRelease_SAT28" },
     ["SAT_29"] = { Type = "Stop/Shunt",          ResetPriority = 2,   Color = "Red" },
-
-    -- Points and FPLs
     ["SAT_08"] = { Type = "FPL",                 ResetPriority = 3,   Color = "Blue" },
     ["SAT_09"] = { Type = "Points",              ResetPriority = 4,   Color = "Black" },
     ["SAT_10"] = { Type = "FPL",                 ResetPriority = 3,   Color = "Blue" },
@@ -125,10 +96,6 @@ local SAT_Routes = {
     ["Siding2_DE"] = { RequiredLevers = {"SAT_11", "SAT_12", "SAT_14", "SAT_19"}, Sequence = { {Group = {"SAT_11", "SAT_12", "SAT_14"}}, {Group = {"SAT_19"}} } },
     ["Siding3_DE"] = { RequiredLevers = {"SAT_11", "SAT_17"},                     Sequence = { {Group = {"SAT_11"}}, {Group = {"SAT_17"}} } },
 }
-
--- ==============================================================================
--- Master Export
--- ==============================================================================
 
 local InterlockingData = {
     Boxes = {
