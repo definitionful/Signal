@@ -457,12 +457,14 @@ Tabs.DE:AddSection("Departures to Dovedale Central")
 
 Tabs.DE:AddButton({
     Title = "Dispatch Platform 2",
-    Description = "Routes outgoing train from Platform 2 to Dovedale Central.",
+    Description = "Routes outgoing train from Platform 2 to Cosdale Harbour.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not checkDCClearance() then Messages.ClearanceDenied("Dovedale Central") return end
-        if not checkDECrossing() then Messages.CrossingUnsecured("Dovedale East") return end
-        executeRoute("DE", "Departure_Platform2_DC", "Platform 2", "Dovedale Central") 
+        if not isDovedaleActive then Messages.NotHosting("Dovedale East") return end -- Check hosting FIRST
+        if not checkCHClearance() then Messages.ClearanceDenied("Cosdale Harbour") return end
+        if not checkDECrossing() then Messages.CrossingUnsecured("Dovedale East") return end -- Fixed arg here too!
+        
+        executeRoute("DE", "Departure_Platform2_CH", "Platform 2", "Cosdale Harbour") 
     end
 })
 
