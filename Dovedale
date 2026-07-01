@@ -1,6 +1,5 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
--- Initialize Custom Messages Module
 local Messages = nil
 pcall(function()
     local url = "https://raw.githubusercontent.com/definitionful/DR/refs/heads/main/Messages" 
@@ -348,78 +347,39 @@ end
 
 local function checkDECrossing()
     local crossing = Workspace:FindFirstChild("DECrossing")
-    if not crossing then return false end
-    
-    local active = crossing:FindFirstChild("Active")
-    local free = crossing:FindFirstChild("Free")
-    
-    if active and free and active.Value == true and free.Value == true then
-        return true
-    end
-    return false
+    local active = crossing and crossing:FindFirstChild("Active")
+    local free = crossing and crossing:FindFirstChild("Free")
+    return active and free and active.Value == true and free.Value == true
 end
 
 local function checkSATCrossing()
     local crossing = Workspace:FindFirstChild("SATCrossing")
-    if not crossing then return false end
-    
-    local active = crossing:FindFirstChild("Active")
-    local free = crossing:FindFirstChild("Free")
-    
-    if active and free and active.Value == true and free.Value == true then
-        return true
-    end
-    return false
+    local active = crossing and crossing:FindFirstChild("Active")
+    local free = crossing and crossing:FindFirstChild("Free")
+    return active and free and active.Value == true and free.Value == true
 end
 
 local function checkDCClearance()
     local telegraph = Workspace:FindFirstChild("PenguinTelegraph")
-    if not telegraph then return false end
-    
-    local link = telegraph:FindFirstChild("DE - DC")
-    if not link then return false end
-    
-    local target = link:FindFirstChild("DC")
-    if not target then return false end
-    
-    local state = target:FindFirstChild("State")
-    if state and state.Value == 1 then
-        return true
-    end
-    return false
+    local link = telegraph and telegraph:FindFirstChild("DE - DC")
+    local target = link and link:FindFirstChild("DC")
+    local state = target and target:FindFirstChild("State")
+    return state and state.Value == 1
 end
 
 local function checkSATClearance()
     local block = Workspace:FindFirstChild("TokenlessBlocks DE - SAT")
-    if not block then return false end
-    
-    local states = block:FindFirstChild("States")
-    if not states then return false end
-    
-    local dial = states:FindFirstChild("Dial")
-    if dial and dial.Value == 3 then
-        return true
-    end
-    return false
+    local states = block and block:FindFirstChild("States")
+    local dial = states and states:FindFirstChild("Dial")
+    return dial and dial.Value == 3
 end
 
 local function checkCHClearance()
     local block = Workspace:FindFirstChild("TokenlessBlocks DE - CH")
-    if not block then return false end
-    
-    local states = block:FindFirstChild("States")
-    if not states then return false end
-    
-    local dial = states:FindFirstChild("Dial")
-    if dial and dial.Value == 3 then
-        return true
-    end
-    return false
+    local states = block and block:FindFirstChild("States")
+    local dial = states and states:FindFirstChild("Dial")
+    return dial and dial.Value == 3
 end
-
--- ==========================================
--- Dovedale East Control Tab
--- ==========================================
 
 Tabs.DE:AddSection("Arrivals from Dovedale Central")
 
@@ -460,9 +420,9 @@ Tabs.DE:AddButton({
     Description = "Routes outgoing train from Platform 2 to Cosdale Harbour.",
     Callback = function() 
         if not isPlayerInsideBox() then Messages.PositionRequired() return end
-        if not isDovedaleActive then Messages.NotHosting("Dovedale East") return end -- Check hosting FIRST
+        if not isDovedaleActive then Messages.NotHosting("Dovedale East") return end
         if not checkCHClearance() then Messages.ClearanceDenied("Cosdale Harbour") return end
-        if not checkDECrossing() then Messages.CrossingUnsecured("Dovedale East") return end -- Fixed arg here too!
+        if not checkDECrossing() then Messages.CrossingUnsecured("Dovedale East") return end
         
         executeRoute("DE", "Departure_Platform2_CH", "Platform 2", "Cosdale Harbour") 
     end
@@ -750,10 +710,6 @@ Tabs.DE:AddButton({
         end)
     end
 })
-
--- ==========================================
--- Satus Control Tab
--- ==========================================
 
 Tabs.SAT:AddSection("Departures to Dovedale East")
 
