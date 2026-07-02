@@ -92,9 +92,16 @@ local SAT_Levers = {
 }
 
 local SAT_Routes = {
-    ["Siding1_DE"] = { RequiredLevers = {"SAT_11", "SAT_12", "SAT_20"},           Sequence = { {Group = {"SAT_11", "SAT_12"}}, {Group = {"SAT_20"}} } },
-    ["Siding2_DE"] = { RequiredLevers = {"SAT_11", "SAT_12", "SAT_14", "SAT_19"}, Sequence = { {Group = {"SAT_11", "SAT_12", "SAT_14"}}, {Group = {"SAT_19"}} } },
-    ["Siding3_DE"] = { RequiredLevers = {"SAT_11", "SAT_17"},                     Sequence = { {Group = {"SAT_11"}}, {Group = {"SAT_17"}} } },
+    ["Siding1_DE"]   = { RequiredLevers = {"SAT_11", "SAT_12", "SAT_20"},           Sequence = { {Group = {"SAT_11", "SAT_12"}}, {Group = {"SAT_20"}} } },
+    ["Siding2_DE"]   = { RequiredLevers = {"SAT_11", "SAT_12", "SAT_14", "SAT_19"}, Sequence = { {Group = {"SAT_11", "SAT_12", "SAT_14"}}, {Group = {"SAT_19"}} } },
+    ["Siding3_DE"]   = { RequiredLevers = {"SAT_11", "SAT_17"},                     Sequence = { {Group = {"SAT_11"}}, {Group = {"SAT_17"}} } },
+    ["DE_Siding3"]   = { RequiredLevers = {"SAT_07", "SAT_11"},                     Sequence = { {Group = {"SAT_11"}}, {Group = {"SAT_07"}} } },
+    ["DE_Siding2"]   = { RequiredLevers = {"SAT_07", "SAT_11", "SAT_12", "SAT_14"}, Sequence = { {Group = {"SAT_11", "SAT_12", "SAT_14"}}, {Group = {"SAT_07"}} } },
+    ["DE_Siding1"]   = { RequiredLevers = {"SAT_07", "SAT_11", "SAT_12"},           Sequence = { {Group = {"SAT_11", "SAT_12"}}, {Group = {"SAT_07"}} } },
+    ["DE_Platform1"] = { RequiredLevers = {"SAT_05", "SAT_08", "SAT_09"},         Sequence = { {Group = {"SAT_09"}}, {Group = {"SAT_08", "SAT_05"}} } },
+    ["DE_Platform2"] = { RequiredLevers = {"SAT_02", "SAT_08", "SAT_10"},         Sequence = { {Group = {"SAT_08", "SAT_10"}}, {Group = {"SAT_02"}} } },
+    ["Platform1_DE"] = { RequiredLevers = {"SAT_09", "SAT_24", "SAT_25"},         Sequence = { {Group = {"SAT_09"}}, {Group = {"SAT_24", "SAT_25"}} } },
+    ["Platform2_DE"] = { RequiredLevers = {"SAT_24", "SAT_28"},                   Sequence = { {Group = {"SAT_28", "SAT_24"}} } },
 }
 
 local InterlockingData = {
